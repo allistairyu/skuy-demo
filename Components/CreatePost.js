@@ -7,25 +7,17 @@ export default function CreatePost() {
   const [title, changeTitle] = React.useState('')
   const [content, changeContent] = React.useState('')
 
-  const onSubmit = async () => {
-    const post_id = uuid.v4()
+  const onSubmit = () => {
+    // const post_id = uuid.v4()
     //fetch post stuff
-    const post_response = await fetch(`https://skuytestapp.herokuapp.com/api/posts/`, {
+    let body = {
+      content: content
+    }
+    fetch(`https://skuytestapp.herokuapp.com/api/posts`, {
       method: 'POST',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        title: title, 
-        content: content,
-        comments: [],
-        likes: 1,
-        id: post_id,
-        date_created: new Date()
-        })
-    });
-    console.log(post_response)
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify(body)
+    }).catch(err => console.error(err)).then(response => response.text()).then(data => console.log(data)).then(changeTitle('')).then(changeContent(''))
     alert('Submitted')
   }
 

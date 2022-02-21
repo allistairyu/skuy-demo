@@ -1,4 +1,4 @@
-import { View, Text, Button } from 'react-native'
+import { View, Text, Button, StyleSheet, SafeAreaView, ScrollView, StatusBar } from 'react-native'
 import React, { useEffect } from 'react'
 import Post from './Post'
 
@@ -25,15 +25,36 @@ export default function ViewPosts() {
 	}, [refresh])
 
 	return (
-		<View>
-			<Text>View Posts</Text>
-			{posts.map((p, index) => 
-				<Post post={p} key={index}/>
-			)}
-			<Button 
-				title="refresh"
-				onPress={() => triggerRefresh(refresh + 1)}
-			/>
-		</View>
+		// <View>
+		<SafeAreaView style={styles.container}>
+			<ScrollView style={styles.scrollView}>
+				<Text>View Posts</Text>
+				{posts.map((p, index) => 
+					<Post post={p} key={index}/>
+				)}
+				<Button 
+					title="refresh"
+					onPress={() => triggerRefresh(refresh + 1)}
+				/>
+			</ScrollView>
+		</SafeAreaView>
+		// </View>
 	)
 }
+
+const styles = StyleSheet.create({
+	container: {
+	  flex: 1,
+	  paddingTop: StatusBar.currentHeight,
+	  borderColor: 'red',
+	  borderWidth: 5
+	},
+	scrollView: {
+	  marginHorizontal: 30,
+	  borderColor: 'red'
+	},
+	text: {
+	  fontSize: 42,
+	},
+  });
+  

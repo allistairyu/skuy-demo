@@ -5,13 +5,15 @@ import { Audio } from 'expo-av';
 import { setAudioModeAsync } from 'expo-av/build/Audio';
 import CreatePost from './Components/CreatePost'
 import ViewPosts from './Components/ViewPosts'
+import NavBar from './Components/NavBar'
 
 export default function App() {
 
   // const [sound, setSound] = useState();
   // const [time, setTime] = useState(new Date().toLocaleTimeString());
   // const [alarmTime, setAlarmTime] = useState(addMinutes(new Date(), 1/12).toLocaleTimeString());
-  const [createView, choose] = useState(0)
+  // const [createView, choose] = useState(0)
+  const [createPost, showCreatePost] = useState(false)
 
   // function addMinutes(date, minutes) {
   //   return new Date(date.getTime() + minutes*60000);
@@ -63,19 +65,30 @@ export default function App() {
     <View style={styles.container}>
       {/* <Text style={styles.baseText}>{time}</Text> */}
       <StatusBar style="auto" />
-      <Button 
-        title="Create a Post"
-        onPress={() => choose(0)}
-      />
+      
       <Button 
         title="View Posts"
         onPress={() => choose(1)}
       />
-      {!createView ?
+      <Button 
+        title="Create a Post"
+        onPress={() => showCreatePost(true)}
+      />
+      {createPost ?
+        <View>
+          <CreatePost />
+          <Button title="Cancel" onPress={() => showCreatePost(false)} />
+        </View>
+        :
+        <></>
+      }
+      <ViewPosts />
+      {/* {!createView ?
         <CreatePost />
         :
         <ViewPosts />
-      }
+      } */}
+      <NavBar />
     </View>
     )
 }
@@ -85,7 +98,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'center'
   },
   baseText: {
     fontWeight: 'bold',
