@@ -1,11 +1,11 @@
 import { View, Text, TextInput, StyleSheet, Button } from 'react-native'
-import React from 'react'
+import React, { useState } from 'react'
 import uuid from 'react-native-uuid';
 
-export default function CreatePost() {
+export default function CreatePost({navigation}) {
 
-  const [title, changeTitle] = React.useState('')
-  const [content, changeContent] = React.useState('')
+  const [title, changeTitle] = useState('')
+  const [content, changeContent] = useState('')
 
   const onSubmit = () => {
     // const post_id = uuid.v4()
@@ -19,6 +19,7 @@ export default function CreatePost() {
       body: JSON.stringify(body)
     }).catch(err => console.error(err)).then(response => response.text()).then(data => console.log(data)).then(changeTitle('')).then(changeContent(''))
     alert('Submitted')
+    navigation.navigate('Feed')
   }
 
   return (
@@ -38,6 +39,10 @@ export default function CreatePost() {
         title="Submit"
         onPress={onSubmit}
       />
+      <Button 
+        title="Cancel"
+        onPress={() => navigation.goBack()}
+      />
     </View>
   )
 }
@@ -51,7 +56,6 @@ const styles = StyleSheet.create({
   },
   content: {
     height: 150,
-    width: 250,
     margin: 12,
     borderWidth: 1,
     padding: 10,

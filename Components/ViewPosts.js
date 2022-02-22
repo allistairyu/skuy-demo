@@ -1,10 +1,9 @@
-import { View, Text, Button, StyleSheet, SafeAreaView, ScrollView, StatusBar } from 'react-native'
-import React, { useEffect } from 'react'
-import Post from './Post'
-
-export default function ViewPosts() {
-	const [posts, loadPosts] = React.useState([])
-	const [refresh, triggerRefresh] = React.useState(0)
+import { View, Text, Button, StyleSheet, SafeAreaView, ScrollView, StatusBar, FlatList } from 'react-native'
+import React, { useState, useEffect } from 'react'
+import PostPreview from './PostPreview'
+export default function ViewPosts({ navigation }) {
+	const [posts, loadPosts] = useState([])
+	const [refresh, triggerRefresh] = useState(0)
 
 	//https://devtrium.com/posts/async-functions-useeffect
 	// https://skuytestapp.herokuapp.com/api/posts
@@ -16,29 +15,20 @@ export default function ViewPosts() {
 		}
 		const result = fetchPosts().catch(console.error)
 		result.then((data) => loadPosts(data))
-		// result.then(loadPosts({
-		// 	id: 2,
-		// 	title: 'asdf',
-		// 	content: 'contentasdf',
-		// 	likes: 25
-		// }))
 	}, [refresh])
 
 	return (
-		// <View>
-		<SafeAreaView style={styles.container}>
-			<ScrollView style={styles.scrollView}>
-				<Text>View Posts</Text>
-				{posts.map((p, index) => 
-					<Post post={p} key={index}/>
-				)}
-				<Button 
-					title="refresh"
-					onPress={() => triggerRefresh(refresh + 1)}
-				/>
-			</ScrollView>
-		</SafeAreaView>
-		// </View>
+		<View>
+			<Button 
+				title="refresh"
+				onPress={() => triggerRefresh(refresh + 1)}
+			/>
+			<FlatList
+				data={posts}
+				renderItem={({item}) => <PostPreview post={item} navigation={navigation} />}
+			/>
+			
+		</View>
 	)
 }
 
